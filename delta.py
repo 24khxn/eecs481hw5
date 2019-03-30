@@ -13,12 +13,14 @@ def main():
     changes = list(range(set_size))  # set of changes {c_1, c_2, ..., c_n}
 
     p = minimize(set(), changes)
-    return list(p).sort()
+
+    # print(p)
+    return sorted(list(p))
 
 
 # delta debugging algorithm, see slides for pseudocode
 def minimize(p, changes):
-
+    # print('p= {}, c= {}'.format(p, changes))
     # base case
     if len(changes) == 1:
         return changes
@@ -45,8 +47,11 @@ def is_interesting(split_set):
     for number in split_set:
         command += ' {}'.format(number)
 
+    # print('calling {}'.format(command))
+
     return subprocess.call(command, shell=True)
 
 
 if __name__ == "__main__":
-    main()
+    x = main()
+    print(x)
