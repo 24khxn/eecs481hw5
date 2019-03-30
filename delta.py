@@ -13,7 +13,7 @@ def main():
     set_range = list(range(set_size))  # range of changes {c_1, c_2, ..., c_n}
 
     p = minimize(set(), set_range)
-    return p.sort()
+    return list(p).sort()
 
 # delta debugging algorithm, see slides for pseudocode
 
@@ -31,7 +31,7 @@ def minimize(p, set_range):
     if is_interesting(p.union(p2)):
         return minimize(p, p2)
 
-    return minimize(p.union(p2), p1).union(minimize(p.union(p1), p2))
+    return set().union(minimize(p.union(p2), p1), minimize(p.union(p1), p2))
 
 
 def split(set_range):
@@ -46,7 +46,7 @@ def is_interesting(split_set):
     for number in split_set:
         command += ' {}'.format(number)
 
-    return subprocess.call(command)
+    return subprocess.call(command, shell=True)
 
 
 if __name__ == "__main__":
