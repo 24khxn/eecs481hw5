@@ -1,2 +1,17 @@
 #!/bin/bash
 
+for i in $* ; do
+    patch -p0 wireworld-original.c < patch.$i
+done
+
+RETVAL=$(gcc wireworld-original.c)
+
+for i in $* ; do
+    patch -p0 -R wireworld-original.c < patch.$i
+done
+
+if [ "$RETVAL" == 0 ]; then
+    exit 0
+else 
+    exit 1
+fi
