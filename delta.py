@@ -10,21 +10,20 @@ interesting_check = sys.argv[2]  # command to check if set is interesting
 
 
 def main():
-    set_range = list(range(set_size))  # range of changes {c_1, c_2, ..., c_n}
+    changes = list(range(set_size))  # set of changes {c_1, c_2, ..., c_n}
 
-    p = minimize(set(), set_range)
+    p = minimize(set(), changes)
     return list(p).sort()
 
+
 # delta debugging algorithm, see slides for pseudocode
-
-
-def minimize(p, set_range):
+def minimize(p, changes):
 
     # base case
-    if len(set_range) == 1:
-        return set_range
+    if len(changes) == 1:
+        return changes
 
-    p1, p2 = split(set_range)
+    p1, p2 = split(changes)
 
     if is_interesting(p.union(p1)):
         return minimize(p, p1)
@@ -34,9 +33,9 @@ def minimize(p, set_range):
     return set().union(minimize(p.union(p2), p1), minimize(p.union(p1), p2))
 
 
-def split(set_range):
-    half = len(set_range)//2
-    return set_range[:half], set_range[half:]
+def split(changes):
+    half = len(changes)//2
+    return changes[:half], changes[half:]
 
 
 def is_interesting(split_set):
