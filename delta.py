@@ -5,14 +5,16 @@ import sys
 if len(sys.argv) != 3:
     exit(1)
 
-set_size = int(sys.argv[1]) # n, size of set to be minimized
-interesting_check = sys.argv[2] # command to check if set is interesting
+set_size = int(sys.argv[1])  # n, size of set to be minimized
+interesting_check = sys.argv[2]  # command to check if set is interesting
+
 
 def main():
     set_range = list(range(set_size))
 
     min_set = minimize(set(), set_range)
     return min_set.sort()
+
 
 def minimize(min_set, set_range):
 
@@ -29,12 +31,21 @@ def minimize(min_set, set_range):
 
     return minimize(min_set.union(p2), p1).union(minimize(min_set.union(p1), p2))
 
+
 def split_list(set_range):
     half = len(set_range)//2
     return set_range[:half], set_range[half:]
 
+
 def is_interesting(split_set):
-    return 1;
+    command = '\"'
+    command += interesting_check
+    command += '\"'
+    for number in split_set:
+        command += ' {}'.format(number)
+
+    return subprocess.call(command)
+
 
 if __name__ == "__main__":
     main()
