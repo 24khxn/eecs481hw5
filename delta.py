@@ -20,7 +20,8 @@ def main():
 
 # delta debugging algorithm, see slides for pseudocode
 def minimize(p, changes):
-    print('dd(p= {}, c= {} )'.format(p, changes))
+    # print('dd(p= {}, c= {} )'.format(p, changes))
+
     # base case
     if len(changes) == 1:
         return changes
@@ -41,14 +42,11 @@ def split(changes):
 
 
 def is_interesting(split_set):
-    # command = '\"'
     command = interesting_check
-    # command += '\"'
     for number in split_set:
         command += ' {}'.format(number)
 
-    print('calling {}'.format(command))
-
+    # print('calling {}'.format(command))
     return subprocess.call(command, shell=True)
 
 
