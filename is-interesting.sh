@@ -1,13 +1,22 @@
 #!/bin/bash
-FIRST=0
-SECOND=0
-for i in $* ; do
-  if [ $i -eq 3 ]; then FIRST=1 ; fi
-  if [ $i -eq 6 ]; then SECOND=1 ; fi
+
+rm libpng-1.6.34/*.gcov 2> /dev/null
+rm libpng-1.6.34/*.gcda 2> /dev/null 
+rm *.gcov 2> /dev/null 
+
+ALL_TEST_NAMES=""
+for i in $*
+do
+    ALL_TEST_NAMES+="./large-png-suite/"
+    ALL_TEST_NAMES+="$i.png"
+    ALL_TEST_NAMES+=" "
 done
-if [ $FIRST -eq 1 ] ; then
-  if [ $SECOND -eq 1 ] ; then
-    exit 1 # interesting
-  fi
-fi
-exit 0
+
+echo "$ALL_TEST_NAMES"
+
+./libpng-1.6.34/pngtest -m $ALL_TEST_NAMES > /dev/null 2> /dev/null 
+
+TEST_RESULT=$(gcov libpng-1.6/*.c 2> /dev/null)
+echo "test result: $TEST_RESULT"
+
+
