@@ -12,11 +12,14 @@ do
     ALL_TEST_NAMES+=" "
 done
 
-echo "$ALL_TEST_NAMES"
+./libpng-1.6.34/pngtest -m $ALL_TEST_NAMES > /dev/null 2> /dev/null
+gcov libpng-1.6.34/*.c 2> /dev/null | grep "Lines executed:" > all_percentages.output
+PERCENT_COVERAGE=$(python parse_gcov.py)
+INT_PERCENT_COVERAGE=$(echo $PERCENT_COVERAGE | tr -dc '0-9')
+echo "percent coverage: $PERCENT_COVERAGE"
 
-./libpng-1.6.34/pngtest -m $ALL_TEST_NAMES > /dev/null 2> /dev/null 
-
-TEST_RESULT=$(gcov libpng-1.6/*.c 2> /dev/null)
-echo "test result: $TEST_RESULT"
-
-
+if [ $INT_PERCENT_COVERAGE -lt 3588 ]
+then
+	exit 0
+fi 
+exit 1
