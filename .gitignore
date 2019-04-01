@@ -2,3 +2,4 @@
 *.out
 wireworld*
 .aliases
+*.gcov
